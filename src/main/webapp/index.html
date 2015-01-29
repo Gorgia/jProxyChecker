@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Getting started with JSON Form</title>
+    <link rel="stylesheet" type="text/css" href="/resources/css/bootstrap.min.css"/>
+</head>
+<body>
+<h1>Please insert your proxy</h1>
+
+<form id="stocazzo"></form>
+<div id="res" class="alert"></div>
+<script type="text/javascript" src="/resources/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/resources/js/underscore.js"></script>
+<script type="text/javascript" src="/resources/js/jsv.js"></script>
+<script type="text/javascript" src="/resources/js/jsonform.js"></script>
+<script type="text/javascript">
+    $('#stocazzo').jsonForm({
+        schema: {
+            ip: {
+                type: 'string',
+                title: 'Please insert here the proxy ip',
+                required: true
+            },
+            port: {
+                type: 'string',
+                title: 'port',
+                default: "8080"
+            }
+        },
+        onSubmit: function (errors, values) {
+            if (errors) {
+                $('#res').html('<p>I beg your pardon?</p>');
+            }
+            else {
+                $('#res').html('<p>Hello ' + values.name + '.' +
+                (values.age ? '<br/>You are ' + values.age + '.' : '') +
+                '</p>');
+            }
+        }
+    });
+</script>
+</body>
+
+</html>
