@@ -1,13 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2009 Ale46.
+ * Copyright (c) 2015 Gorgia.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v2.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  ******************************************************************************/
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 
 import com.maxmind.geoip.Location;
@@ -43,7 +42,7 @@ class Proxy{
 		boolean status = false;
 		long t0 = System.currentTimeMillis();
 		
-		if (address.getAddress().isReachable(timeout)){		//controlla se l'indirizzo è raggiungibile
+		if (address.getAddress().isReachable(timeout)){		//check if address is reachable
 			status =  true;
 		}
 		long t1 = System.currentTimeMillis();
@@ -81,7 +80,7 @@ class Proxy{
 	
 	}
 	
-	
+
 	public String getAnonLevel() throws IOException {
 
 		ArrayList<String> stuff = new WebUrl(anonChecker,ip,port).getData();
@@ -89,6 +88,8 @@ class Proxy{
 		
 		return stuff.get(0);
 	}
+
+
 	
 
 	
