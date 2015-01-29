@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="maxmindgeoip">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/maxmindgeoip.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
