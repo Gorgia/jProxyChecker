@@ -57,6 +57,7 @@ public class ProxyChecker {
                 proxy.setCity(getCity(addressInTesting));
                 proxy.setAnonymity(getAnonLevel(addressInTesting));
             }
+            log.info("Checked: " +proxy.getProxyId().getIp() + ":" + proxy.getProxyId().getPort() );
         } catch (IOException e) {
             log.error("", e);
         }
