@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by andrea on 23/01/15.
  */
-@Service
+@Component
 public class ProxyChecker {
 
     String anonCheckerUrl = "http://jnerd.altervista.org/jproxycheck/check.php";
@@ -57,7 +57,7 @@ public class ProxyChecker {
                 proxy.setCity(getCity(addressInTesting));
                 proxy.setAnonymity(getAnonLevel(addressInTesting));
             }
-            log.info("Checked: " +proxy.getProxyId().getIp() + ":" + proxy.getProxyId().getPort() );
+            log.info("The proxy: " +proxy.getProxyId().getIp() + ":" + proxy.getProxyId().getPort() + " is Active? " + proxy.isActive() );
         } catch (IOException e) {
             log.error("", e);
         }
