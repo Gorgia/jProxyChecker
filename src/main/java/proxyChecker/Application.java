@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,11 +28,12 @@ import java.util.List;
 
 
 @ComponentScan
-@EnableAutoConfiguration
 @EnableJpaRepositories
 @EnableWebMvc
 @EnableAsync
 @EnableScheduling
+@EnableTransactionManagement
+@EnableAutoConfiguration
 public class Application extends WebMvcConfigurerAdapter {
 
     static ConfigurableApplicationContext context;
@@ -40,7 +42,6 @@ public class Application extends WebMvcConfigurerAdapter {
     public static void main(String[] args) throws IOException {
         context = SpringApplication.run(Application.class, args);
         repository = context.getBean(MyProxyRepository.class);
-        ProxyChecker proxyChecker = context.getBean(ProxyChecker.class);
         List<Proxy> proxies = repository.findAll();
         if (proxies.size() < 300) {
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();

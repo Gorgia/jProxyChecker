@@ -1,13 +1,17 @@
 package proxyChecker.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import java.net.UnknownHostException;
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 
 @Entity
@@ -24,7 +28,7 @@ public class Proxy {
     private String country;
     private String city;
     private String hostName;
-    private Date lastCheck;
+    private Timestamp lastCheck;
 
     public Proxy() {
     }
@@ -105,13 +109,16 @@ public class Proxy {
         this.hostName = hostName;
     }
 
-    public Date getLastCheck() {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    public Timestamp getLastCheck() {
         return lastCheck;
     }
 
-    public void setLastCheck(Date lastCheck) {
+    public void setLastCheck(Timestamp lastCheck) {
         this.lastCheck = lastCheck;
     }
+
+
 
     public boolean isActive() {
         return delay > 0 && anonymity != null;

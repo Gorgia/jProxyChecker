@@ -16,4 +16,5 @@ import java.util.List;
 public interface MyProxyRepository extends CrudRepository<Proxy, ProxyId> {
     Proxy findOne(ProxyId proxyId);
     List<Proxy> findAll();
+    Proxy save(Proxy proxy);
 }

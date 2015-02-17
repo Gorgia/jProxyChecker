@@ -4,9 +4,11 @@ import com.maxmind.geoip.Location;
 import com.maxmind.geoip.LookupService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import proxyChecker.logger.InjectLogger;
 import proxyChecker.model.Proxy;
 
@@ -17,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -36,13 +39,24 @@ public class ProxyChecker {
     @Autowired
     private MyProxyRepository proxyRepo;
 
-    @Scheduled(fixedDelay=3600000)
+
+    @Scheduled(fixedDelay = 100000L)
     public void checkAll(){
         List<Proxy> proxies = proxyRepo.findAll();
         for (Proxy proxy : proxies){
             checkProxy(proxy);
-            proxyRepo.save(proxy);
+            save(proxy);
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                log.error("",e);
+            }
         }
+    }
+
+    @Transactional
+    public Proxy save(Proxy proxy){
+        return proxyRepo.save(proxy);
     }
 
 
@@ -50,7 +64,7 @@ public class ProxyChecker {
         try {
             InetSocketAddress addressInTesting = new InetSocketAddress(proxy.getIp(), Integer.parseInt(proxy.getPort()));
             proxy.setDelay(determineDelay(addressInTesting));
-            proxy.setLastCheck(new Date(new java.util.Date().getTime()));
+            proxy.setLastCheck(new Timestamp(new java.util.Date().getTime()));
             if (proxy.getDelay() > 0l) {
                 proxy.setHostName(getHostName(addressInTesting));
                 proxy.setCountry(getCountry(addressInTesting));
@@ -111,6 +125,8 @@ public class ProxyChecker {
         try {
             URLConnection urlconn = null;
             urlconn = oracle.openConnection(httpProxy);
+            urlconn.setConnectTimeout(10000);
+            urlconn.setReadTimeout(10000);
             urlconn.connect();
             BufferedReader buffreader = new BufferedReader(new InputStreamReader(urlconn.getInputStream()));
             response = buffreader.readLine();

@@ -41,7 +41,6 @@ public class CrudController {
         proxiesInDb = repository.findAll();
         if (proxiesInDb.size() == 0) {
             log.warn("There are no proxies in DB. please fill it (through webservice if you want).");
-
         }
         return proxiesInDb;
     }
@@ -51,9 +50,8 @@ public class CrudController {
     public
     @ResponseBody
     List<Proxy> getAllActive() {
-        List<Proxy> proxiesInDb;
+        List<Proxy> proxiesInDb = getAll();
         List<Proxy> activeProxiesInDb = new ArrayList<Proxy>();
-        proxiesInDb = repository.findAll();
         for (Proxy proxy : proxiesInDb) {
             if (proxy.isActive()) {
                 activeProxiesInDb.add(proxy);
